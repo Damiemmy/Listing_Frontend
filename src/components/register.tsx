@@ -1,37 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-
 import { motion } from "framer-motion";
-
 import { useNavigate } from "react-router-dom";
-
 import API from "../services/Api";
 import { useAuth } from "../context/AuthContext";
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
-  const {login}=useAuth()
-  /*
-  ============================================
-  STATES
-  ============================================
-  */
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
+    email: "",
     password: "",
+    confirm_password: "",
   });
 
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState("");
-
-  /*
-  ============================================
-  HANDLE INPUT
-  ============================================
-  */
 
   const handleChange = (e) => {
     setFormData({
@@ -40,62 +27,40 @@ const Login = () => {
     });
   };
 
-  /*
-  ============================================
-  LOGIN USER
-  ============================================
-  */
-
-  const getToken = async () => {
+  const registerUser = async () => {
     try {
       setLoading(true);
-
       setError("");
 
-      const response = await API.post(
-        "/token/",
-        formData
-      );
-      /*
-      ============================================
-      STORE TOKENS
-      ============================================
-      */
-
-      login(response.data.access, response.data.refresh)
-
-      /*
-      ============================================
-      OPTIONAL USER STORAGE
-      ============================================
-      */
-
-      if (response.data.user) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify(response.data.user)
-        );
+      // basic frontend validation
+      if (formData.password !== formData.confirm_password) {
+        setError("Passwords do not match");
+        return;
       }
 
-      /*
-      ============================================
-      REDIRECT USER
-      ============================================
-      */
+      const response = await API.post("user/register/", {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
 
-      navigate("/");
+      // If your backend returns tokens after register (recommended)
+      if (response.data.access && response.data.refresh) {
+        login(response.data.access, response.data.refresh);
+        navigate("/");
+      } else {
+        // fallback: redirect to login
+        navigate("/login");
+      }
 
     } catch (err) {
-
       console.log(err);
-
       setError(
         err.response?.data?.detail ||
-          "Invalid credentials"
+        err.response?.data?.message ||
+        "Registration failed"
       );
-
     } finally {
-
       setLoading(false);
     }
   };
@@ -112,13 +77,12 @@ const Login = () => {
 
         {/* HEADER */}
         <div className="text-center mb-8">
-
           <h2 className="text-4xl font-black mb-3">
-            Welcome Back
+            Create Account
           </h2>
 
           <p className="text-gray-300">
-            Login to continue your hosting journey
+            Join BookMe and start hosting or booking stays
           </p>
         </div>
 
@@ -130,9 +94,8 @@ const Login = () => {
         )}
 
         {/* FORM */}
-        <div className="space-y-5">
+        <div className="space-y-4">
 
-          {/* USERNAME */}
           <input
             type="text"
             name="username"
@@ -142,7 +105,15 @@ const Login = () => {
             className="w-full px-5 py-4 rounded-2xl bg-black/40 border border-white/10 outline-none focus:border-pink-500 transition"
           />
 
-          {/* PASSWORD */}
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-5 py-4 rounded-2xl bg-black/40 border border-white/10 outline-none focus:border-pink-500 transition"
+          />
+
           <input
             type="password"
             name="password"
@@ -152,25 +123,33 @@ const Login = () => {
             className="w-full px-5 py-4 rounded-2xl bg-black/40 border border-white/10 outline-none focus:border-pink-500 transition"
           />
 
+          <input
+            type="password"
+            name="confirm_password"
+            placeholder="Confirm Password"
+            value={formData.confirm_password}
+            onChange={handleChange}
+            className="w-full px-5 py-4 rounded-2xl bg-black/40 border border-white/10 outline-none focus:border-pink-500 transition"
+          />
+
           {/* BUTTON */}
           <button
-            onClick={getToken}
+            onClick={registerUser}
             disabled={loading}
             className="w-full py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-pink-500 to-red-500 hover:scale-[1.02] transition duration-300 shadow-xl disabled:opacity-50"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Creating Account..." : "Register"}
           </button>
         </div>
 
         {/* FOOTER */}
         <p className="text-center text-gray-400 mt-8 text-sm">
-          Don’t have an account?{" "}
-
+          Already have an account?{" "}
           <span
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/login")}
             className="text-pink-400 cursor-pointer hover:underline"
           >
-            Sign up
+            Login
           </span>
         </p>
       </motion.div>
@@ -178,4 +157,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

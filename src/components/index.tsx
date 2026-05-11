@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Categories from "./Category";
 
+
 export default function Home() {
   const [listing, setListing] = useState([]);
 
@@ -208,6 +209,7 @@ export default function Home() {
                 <img
                   src={item.images}
                   className="w-full h-60 object-cover"
+                  onClick={()=> navigate(`/listing/${item.id}`)}
                 />
 
                 <div className="p-5">
@@ -229,6 +231,7 @@ export default function Home() {
                   </p>
 
                   <button
+                    onClick={()=> navigate(`/listing/${item.id}`)}
                     className="mt-5 w-full bg-gradient-to-r from-pink-500 to-red-500 text-white py-3 rounded-2xl font-semibold hover:scale-[1.02] transition"
                   >
                     Book Now

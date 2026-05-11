@@ -3,15 +3,18 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, Home, BadgeCheck } from "lucide-react";
 import { useEffect, useState } from "react";
+import API from "../services/Api";
+import { useNavigate } from "react-router-dom";
+
 
 export default function BecomeHostPage() {
-    const access_token=localStorage.getItem('access')
+    const navigate=useNavigate()
     const [formData, setFormData] = useState({
         full_name: "",
         phone_number: "",
         location: "",
-        experience: "",
-        reason: "",
+        hosting_experience: "",
+        host_reasons: "",
     });
 
   const handleChange = (e) => {
@@ -21,7 +24,7 @@ export default function BecomeHostPage() {
     });
   };
 
-  const handleSubmit = async (e) => {
+/* const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -50,6 +53,20 @@ export default function BecomeHostPage() {
       console.log(err.message);
     }
   };
+*/
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+    try{
+      const response=await API.post("user/roles/become_host/",formData)
+      console.log({"data":response.data,"message":"request sent"})
+      alert(response.data.message)
+      navigate('/')
+
+    }catch(err){
+      console.log(err.message)
+      alert()    }
+  }
 
   useEffect(()=>{
     console.log(formData)
@@ -210,11 +227,10 @@ export default function BecomeHostPage() {
               <label className="block mb-2 font-semibold">
                 Hosting Experience
               </label>
-
               <textarea
                 rows={4}
-                name="experience"
-                value={formData.experience}
+                name="hosting_experience"
+                value={formData.hosting_experience}
                 onChange={handleChange}
                 placeholder="Tell us about your hosting experience"
                 className="w-full border border-gray-300 rounded-xl px-4 py-4 outline-none focus:ring-2 focus:ring-pink-500"
@@ -228,8 +244,8 @@ export default function BecomeHostPage() {
 
               <textarea
                 rows={4}
-                name="reason"
-                value={formData.reason}
+                name="host_reasons"
+                value={formData.host_reasons}
                 onChange={handleChange}
                 placeholder="Tell us why you want to join"
                 className="w-full border border-gray-300 rounded-xl px-4 py-4 outline-none focus:ring-2 focus:ring-pink-500"
