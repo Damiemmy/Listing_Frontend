@@ -190,6 +190,8 @@ AUTH CONTEXT
 */
 
 import AuthProvider from "./context/AuthContext";
+import VerifyEmailPage from "./components/VerifyEmailPage";
+import EmailSuccessPage from "./components/EmailSuccessPage";
 
 const App = () => {
   return (
@@ -218,6 +220,14 @@ const App = () => {
           <Route
             path="/register"
             element={<Register />}
+          />
+          <Route
+            path="/verify-email"
+            element={<VerifyEmailPage/>}
+          />
+          <Route
+            path="/success-email"
+            element={<EmailSuccessPage/>}
           />
 
           <Route

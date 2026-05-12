@@ -50,7 +50,7 @@ const Register = () => {
         navigate("/");
       } else {
         // fallback: redirect to login
-        navigate("/login");
+        navigate("/verify-email");
       }
 
     } catch (err) {
