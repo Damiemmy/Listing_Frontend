@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, Home, BadgeCheck } from "lucide-react";
 import { useEffect, useState } from "react";
-import API from "../services/Api";
+import API from "../../services/Api";
 import { useNavigate } from "react-router-dom";
 
 
@@ -14,7 +14,7 @@ export default function BecomeHostPage() {
         phone_number: "",
         location: "",
         hosting_experience: "",
-        host_reasons: "",
+        host_reasons: null,
     });
 
   const handleChange = (e) => {
@@ -55,22 +55,58 @@ export default function BecomeHostPage() {
   };
 */
 
-  const handleSubmit=async(e)=>{
-    e.preventDefault();
-    try{
-      const response=await API.post("user/roles/become_host/",formData)
-      console.log({"data":response.data,"message":"request sent"})
-      alert(response.data.message)
-      navigate('/')
+  // const handleSubmit=async(e)=>{
+  //   e.preventDefault();
+  //   try{
+  //     const response=await API.post("user/roles/become_host/",formData)
+  //     console.log({"data":response.data,"message":"request sent"})
+  //     alert(response.data.message)
+  //     navigate('/')
 
-    }catch(err){
-      console.log(err.message)
-      alert()    }
+  //   }catch(err){
+  //     console.log(err.message)
+  //     alert()    }
+  // }
+
+  // useEffect(()=>{
+  //   console.log(formData)
+  // },[formData])
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const submitData = new FormData();
+
+  submitData.append("full_name", formData.full_name);
+  submitData.append("phone_number", formData.phone_number);
+  submitData.append("location", formData.location);
+  submitData.append("hosting_experience", formData.hosting_experience);
+  submitData.append("host_reasons", formData.host_reasons);
+  submitData.append("id_document", formData.id_document);
+
+  try {
+    const response = await API.post(
+      "user/roles/become_host/",
+      submitData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log({
+      data: response.data,
+      message: "request sent",
+    });
+
+    alert(response.data.message);
+
+    navigate("/");
+  } catch (err) {
+    console.log(err.response?.data || err.message);
   }
-
-  useEffect(()=>{
-    console.log(formData)
-  },[formData])
+};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -250,6 +286,47 @@ export default function BecomeHostPage() {
                 placeholder="Tell us why you want to join"
                 className="w-full border border-gray-300 rounded-xl px-4 py-4 outline-none focus:ring-2 focus:ring-pink-500"
               ></textarea>
+            </div>
+
+            <div>
+              <label className="block mb-2 font-semibold">
+                National ID
+              </label>
+
+              <label className="w-full border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-pink-500 transition bg-gray-50">
+                
+                <div className="text-center">
+                  <p className="text-lg font-semibold text-gray-700">
+                    Upload Your National ID
+                  </p>
+
+                  <p className="text-sm text-gray-500 mt-1">
+                    Click to browse or drag and drop
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-2">
+                    PNG, JPG, PDF accepted
+                  </p>
+
+                  {formData.id_document && (
+                    <p className="mt-4 text-sm font-medium text-pink-600">
+                      {formData.id_document.name}
+                    </p>
+                  )}
+                </div>
+
+                <input
+                  type="file"
+                  name="id_document"
+                  className="hidden"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      id_document: e.target.files[0],
+                    })
+                  }
+                />
+              </label>
             </div>
 
             <button

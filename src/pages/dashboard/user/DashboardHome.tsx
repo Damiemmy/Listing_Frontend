@@ -1,6 +1,5 @@
-import Sidebar from "../components/SideBar";
-import Navbar from "../components/Navbar";
-
+import Sidebar from "../../../components/sidebar/Sidebar";
+import Navbar from "../../../components/navbar/Navbar";
 import { motion } from "framer-motion";
 
 export default function UserDashboard() {

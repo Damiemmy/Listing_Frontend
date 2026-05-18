@@ -18,7 +18,7 @@ import {
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -152,7 +152,10 @@ export default function Header() {
                   )}
 
                   {user?.role === "admin" && (
-                    <MenuItem icon={<Shield size={18} />} text="Admin Dashboard" to="/admin" setOpenMenu={setOpenMenu} />
+                    <MenuItem icon={<Shield size={18} />} text="Admin Dashboard" to="/dashboard" setOpenMenu={setOpenMenu} />
+                  )}
+                  {user?.role === "host" && (
+                    <MenuItem icon={<Shield size={18} />} text="Host Dashboard" to="/dashboard" setOpenMenu={setOpenMenu} />
                   )}
 
                   <button

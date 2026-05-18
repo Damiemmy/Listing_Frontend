@@ -12,7 +12,7 @@ import {
 
 import { motion } from "framer-motion";
 
-import Categories from "./Category";
+import Categories from "../../components/ui/Category";
 import { useNavigate } from "react-router-dom";
 
 export default function ListingsPage() {

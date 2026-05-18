@@ -161,7 +161,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-export default function VerifyEmailPage() {
+export default function SuccessEmailPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 

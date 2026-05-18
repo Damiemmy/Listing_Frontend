@@ -1,7 +1,7 @@
-import AdminDashboard from "./AdminDashboard";
-import HostDashboard from "./HostDashboard";
-import UserDashboard from "./UserDashboard";
-import { useAuth } from "../context/AuthContext";
+import AdminDashboard from "../admin/DashboardHome";
+import HostDashboard from "../host/DashboardHome";
+import UserDashboard from "../user/DashboardHome";
+import { useAuth } from "../../../context/AuthContext";
 
 const DashboardRedirect = () => {
     const{user}=useAuth()

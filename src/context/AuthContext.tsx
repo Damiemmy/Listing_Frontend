@@ -12,7 +12,6 @@ const AuthContext = createContext();
 export default function AuthProvider({ children }) {
 
   const [user, setUser] = useState(null);
-  const [inDashboard,setInDashboard]=useState(false)
 
   useEffect(() => {
 
@@ -71,8 +70,6 @@ export default function AuthProvider({ children }) {
         login,
         logout,
         setUser,
-        inDashboard,
-        setInDashboard,
       }}
     >
 

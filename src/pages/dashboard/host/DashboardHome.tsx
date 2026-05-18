@@ -1,10 +1,19 @@
-import React from 'react'
+import Sidebar from "../../../components/sidebar/Sidebar";
+import Navbar from "../../../components/navbar/Navbar";
+
 import { motion } from "framer-motion";
 
-
-const HostDashboardIndex = () => {
+export default function HostDashboard() {
   return (
-    <div className="p-8">
+    <div className="flex bg-gradient-to-br from-orange-100 via-pink-100 to-purple-100 min-h-screen overflow-hidden">
+
+      <Sidebar />
+
+      <div className="flex-1">
+
+        <Navbar />
+
+        <div className="p-8">
 
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -45,7 +54,7 @@ const HostDashboardIndex = () => {
             ))}
           </div>
         </div>
-  )
+      </div>
+    </div>
+  );
 }
-
-export default HostDashboardIndex

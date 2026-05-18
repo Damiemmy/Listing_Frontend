@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Search, Star, Quote } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Categories from "./Category";
+import Categories from "../../components/ui/Category";
 
 
 export default function Home() {
